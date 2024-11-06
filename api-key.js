@@ -33,14 +33,18 @@ const generateUI = (articles) => {
 
 //News API Call
 const getNews = async () => {
-    container.innerHTML = "";
-    let response = await fetch(requestURL);
-    if (!response.ok) {
+    container.innerHTML = ""; 
+    try {
+        let response = await fetch(requestURL); 
+        if (!response.ok) {
+            throw new Error("Network response was not ok");
+        }
+        let data = await response.json(); 
+        generateUI(data.articles); 
+    } catch (error) {
         alert("Data unavailable at the moment. Please try again later");
-    return false;
+        console.error("Fetch error: ", error); 
     }
-    let data = await response.json();
-    generateUI(data.articles);
 };
 
 //Category Selection
